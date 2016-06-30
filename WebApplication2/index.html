@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vocal Ranger</title>
+    <link rel="icon" href="icon.ico">
+    <!--<link rel="stylesheet" href="style.css">-->
+    <link rel="stylesheet" href="style.css" />
+
+</head>
+<body>
+    <header>
+        <b>The Vocal Ranger</b>
+    </header>
+
+    <div class="Container">
+        <div id="sidebar">
+            <p>This tool helps find the vocal range of a guitarist. </p>
+            <p>First, start in the original tuning of the song you wish to play. </p>
+            <p>Try to sing along with the track. </p>
+            <p>
+                If it seems like you are having trouble hitting the high notes, bring
+                the tuning down half a step and try again until you feel comfortable
+                singing the song.
+            </p>
+            <p>Have fun and rock on!</p>
+        </div>
+
+        <div id="rightColumn">
+            <div id="rightTop">
+                <div id="canvasContainer">
+                    <canvas id="Fretboard" width="1500" height="400">
+                        Your browser does not support the HTML5 canvas tag.
+                    </canvas>
+                    <canvas id="Animations" width="1500" height="400">
+                        Your browser does not support the HTML5 canvas tag.
+                    </canvas>
+                </div>
+            </div>
+
+            <div id="rightBottom">
+                <div class="section2">
+                    <div class="sectionContainer">
+                        <div class="section2Top">
+                            <h3> Type of Guitar </h3><br>
+                            <table>
+                                <tr>
+                                    <th>Number of Strings</th>
+                                    <td>
+                                        <select class="DropDown" data-bind="options: guitar.Strings.StringOptions,
+                                                optionsText: 'text', optionsValue: 'val',
+                                                value: guitar.Strings.NumberStrings"></select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Number of Frets</th>
+                                    <td>
+                                        <select class="DropDown" data-bind="options: guitar.Frets.FretOptions,
+                                                optionsText:'text', optionsValue: 'val',
+                                                value: guitar.Frets.NumberFrets"></select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="section2Mid" id="TuningType">
+
+
+
+
+                            <br><br>
+                            <h3> Tuning of Guitar </h3><br>
+                            <table>
+                                <tr>
+                                    <th>Tuning</th>
+                                    <td>
+                                        <ul class="switch" data-bind="foreach: guitar.Tuning.TuningType">
+                                            <li data-bind="text: $data,
+                                                css: { selected: $data == $root.guitar.Tuning.ChosenTuning() },
+                                                click: $root.guitar.Tuning.SelectTuning"></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Root Note</th>
+                                    <td>
+                                        <select class="DropDown" data-bind="options: guitar.Tuning.RootNote, optionsText: 'Note', optionsValue: 'index', value: guitar.Tuning.ChosenRootNote"></select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="section2Bottom">
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="section2">
+                    <div class="sectionContainer">
+                        <div class="section2Top"><p> <h3> Select what you would to play on the guitar!</h3></div>
+                        <div class="section2Mid">
+                            <table>
+                                <tr>
+                                    <th>Note</th>
+                                    <td>
+                                        <ul class="switch" data-bind="foreach: guitar.Sound.NoteType">
+                                            <li data-bind="text: $data,
+                                                css: { selected: $data == $root.guitar.Sound.ChosenNote() },
+                                                click: $root.guitar.Sound.SelectNote"></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr class="fadeableOpacity" data-bind="fadeVisible: guitar.Sound.ChosenNote() === 'Chord'">
+                                    <th> Chord Type </th>
+                                    <td>
+                                        <ul class="switch" data-bind="foreach: guitar.Sound.ChordType">
+                                            <li data-bind="text: $data,
+                                                css: { selected: $data == $root.guitar.Sound.ChosenChord() },
+                                                click: $root.guitar.Sound.SelectChord"></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="section2Bottom"><b>This feature is currently not operational</b></div>
+                    </div>
+                </div>
+
+                <div class="section2">
+                    <div class="sectionContainer">
+                        <div class="section2Top">
+                            <p> <h3> Select the tone of the guitar! </h3> </p>
+                            <table>
+                                <tr>
+                                    <th>Tone</th>
+                                    <td>
+                                        <ul class="switch" data-bind="foreach: guitar.Sound.ToneType">
+                                            <li data-bind="text: $data,
+                                                css: { selected: $data == $root.guitar.Sound.ChosenTone() },
+                                                click: $root.guitar.Sound.SelectTone"></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="section2Mid">
+                            <ul class="switch" data-bind="foreach: guitar.Sound.RecordOptions">
+                                <li data-bind="text: $data,
+                                   css: { selected: $data == $root.guitar.Sound.ChosenRecordOption() },
+                                   click: $root.guitar.Sound.SelectRecordOption"></li>
+                            </ul>
+                            <br />
+                            <input type="file" id="songLoad" data-bind="event: {change: loadSong}" />
+                        </div>
+                        <div class="section2Bottom">
+                            <p>
+                                You are playing on a
+                                <b data-bind="text: guitar.Strings.NumberStrings"></b> string guitar with
+                                <b data-bind="text: guitar.Frets.NumberFrets"></b> frets tuned to
+                                <b data-bind="text: guitar.Tuning.ChosenTuning"></b>
+                                <b data-bind="text: guitar.Tuning.ChosenRootNoteText"></b>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Written by Marty Aman.</p>
+        <a href="https://www.musictheory.net/products/lessons" target="_blank">
+            To learn more about music theory visit the following website To learn more
+            about music theory visit the following website
+        </a>
+    </footer>
+
+    <script src="scripts/require.js" data-main="src/requireConfig.js"></script>
+
+</body>
+</html>
